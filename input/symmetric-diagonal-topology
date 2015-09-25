@@ -1,2 +1,3 @@
-tor1; tor; spsw1, spine, 10 |spsw1, spine, 10 | spsw2, spine, 10 | h1, host,1 | h2, host, 1
-tor2; tor; spsw1, spine, 10 | spsw2, spine, 10 |spsw2, spine, 10 | h3, host,1 | h4, host, 1
+tor1; tor; spsw1, spine, 10 | spsw1, spine, 10 | spsw2, spine, 10 | spsw3, spine, 10 | h1, host,2 | h2, host, 2| h3, host, 2 | h4, host, 2| h5, host,2 | h6, host, 2| h7, host,2 | h8, host, 2| h9, host,2 | h10, host, 2| h11, host,2 | h12, host, 2
+tor2; tor; spsw1, spine, 10 | spsw2, spine, 10 | spsw2, spine, 10 | spsw3, spine, 10 | h13, host,2 | h14, host, 2| h15, host,2 | h16, host, 2| h17, host,2 | h18, host, 2| h19, host, 2| h20, host,2 | h21, host, 2| h22, host, 2| h23, host,2 | h24, host, 2
+tor3; tor; spsw1, spine, 10 | spsw2, spine, 10 | spsw3, spine, 10 | spsw3, spine, 10 | h25, host,2 | h26, host, 2| h27, host,2 | h28, host, 2| h29, host, 2| h30, host,2 | h31, host, 2| h32, host, 2| h33, host,2 | h34, host, 2| h35, host,2 | h36, host, 2

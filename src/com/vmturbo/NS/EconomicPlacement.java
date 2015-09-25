@@ -39,6 +39,7 @@ public class EconomicPlacement {
             if (quote >= 0 && quote < minQuote) {//quote can be -1 if path can't accommodate flow
                 minQuote = quote;
                 pathNo = i;
+
             }
         }
 

@@ -146,7 +146,7 @@ public class ECMPTest {
         //==============run economic (1 host to 1 host)================
         ComputePaths cmp = new ComputePaths(spines, tors, hosts, links);
         cmp.findPaths();
-        for (int i = 0; i < 30; i++) {
+        for (int i = 0; i < 12; i++) {
             Flow flow = new Flow(a, c, 0, 10, 1);
             Path path = EconomicPlacement.econPlacement(flow, cmp.getPaths(a, c));
             //System.out.println(path);

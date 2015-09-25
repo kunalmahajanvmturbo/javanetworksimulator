@@ -18,7 +18,7 @@ public class SimulatorMain {
     ArrayList<FlowEvent> flowQueue;
 
 
-    private static String TOPOFILE = "input/yy-topology";
+    private static String TOPOFILE = "input/symmetric-diagonal-topology";
     private static String QUEUEFILE = "input/yy-flowqueue";
 
 
@@ -38,7 +38,7 @@ public class SimulatorMain {
         simulator.flowQueue = queue.getFlowQueue();
         System.out.println("Size of flow event queue: " + simulator.flowQueue.size());
 
-        // compute all the paths        
+        // compute all the paths and store in matrix containing list of all possible paths for each src, dest pair
         ComputePaths comPaths = new ComputePaths(topo.spineList, topo.torList, topo.hostList,
                                                  topo.linkList);
         comPaths.findPaths();
@@ -53,7 +53,7 @@ public class SimulatorMain {
                                                topo.hostList, topo.linkList);
 
         // find random placement
-        // find random placement        
+        // find random placement
         for (FlowEvent flowEvent : simulator.flowQueue) {
             Flow flow = flowEvent.getFlow();
             switch (flowEvent.getFlowEventType()) {
@@ -69,6 +69,7 @@ public class SimulatorMain {
                     metric.printMetrics(topo.linkList);
                     break;
                 case START:
+                    //list of all possible paths for thsi src and dest
                     allPaths = comPaths.getPaths(flow.getSource(), flow.getDest());
                     if (allPaths.isEmpty()) {
                         System.err.println("No path found for flow: source: " + flow.getSource()
@@ -81,9 +82,9 @@ public class SimulatorMain {
 
 
 
-                    //Path pathSelected = ecmp.recommendPath(flow);
-                    Path pathSelected = RandomPlacement.randomPlacement(flow, allPaths);
-                    //Path pathSelected = EconomicPlacement.econPlacement(flow, allPaths);
+                 // Path pathSelected = ecmp.recommendPath(flow);
+                 //  Path pathSelected = RandomPlacement.randomPlacement(flow, allPaths);
+                    Path pathSelected = EconomicPlacement.econPlacement(flow, allPaths);
                     System.out.println("path select" + pathSelected);
                     pathSelected.placeFlow(flow);
 
