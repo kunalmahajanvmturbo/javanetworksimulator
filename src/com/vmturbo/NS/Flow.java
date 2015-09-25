@@ -6,11 +6,14 @@ package com.vmturbo.NS;
 public class Flow {
 
     private Host source, dest;
-    private int start, duration; //in seconds
     private double bandwidth; //bandwidth of the flow
     private double budget; // the budget the flow has, in virtual dollars
 
     private Path assignedPath; //an optional field for flow to remember its assignedPath
+
+    private int start, duration; //these will be reset when flow stops/restarts
+    private int begin, end; //these won't change once set
+    private boolean stopped = false;
 
     //constructor: assuming infinite budget for now
     public Flow(Host source, Host dest, int start, int duration, double bandwidth /*, int budget*/) {
@@ -20,6 +23,8 @@ public class Flow {
         this.duration = duration;
         this.bandwidth = bandwidth;
         this.budget = 200000.0; //Double.MAX_VALUE is problematic, so we use 200k to approximate infinity
+
+        begin = start;
     }
 
     public Host getSource() {
@@ -38,9 +43,37 @@ public class Flow {
         return duration;
     }
 
-    //is this method meaningful?
-    public int getEnd() {
-        return start + duration;
+
+
+    public void stop(int t) {
+
+        if (t < start || stopped || duration == 0)
+            return;
+        if (start + duration <= t) {
+            end = start + duration;
+            duration = 0;
+        }
+        else {
+            duration = duration - (t - start);
+        }
+        stopped = true;
+    }
+
+    public void reset(int t) {
+        if (duration == 0)
+            return;
+        start = t;
+        stopped = false;
+    }
+
+
+
+    public int getDelay() {
+        if (end == 0) {
+            System.out.println("the flow hasn't terminated");
+            return -1;
+        }
+        return end - begin;
     }
 
     public double getBandwidth() {
@@ -50,6 +83,7 @@ public class Flow {
     public double getBudget() {
         return budget;
     }
+
 
     @Override
     public String toString() {
@@ -71,12 +105,33 @@ public class Flow {
         return this.assignedPath;
     }
 
-    /** for testing purpose
+
+
+    // for testing purpose
     public static void main(String[] args) {
         Host h1 = new Host("h1");
         Host h2 = new Host("h2");
-        Flow f = new Flow(h1, h2, 0, 20, 0.5);
-        System.out.println(f);
+        Flow f = new Flow(h1, h2, 0, 4, 1);
+        f.reset(3);
+        System.out.println(f.getStart() + "," + f.getDuration());
+        f.stop(2);
+        System.out.println(f.getStart() + "," + f.getDuration());
+        f.stop(3);
+        System.out.println(f.getStart() + "," + f.getDuration());
+        f.reset(4);
+        System.out.println(f.getStart() + "," + f.getDuration());
+        f.stop(5);
+        System.out.println(f.getStart() + "," + f.getDuration());
+        f.reset(6);
+        System.out.println(f.getStart() + "," + f.getDuration());
+        f.stop(9);
+        System.out.println(f.getStart() + "," + f.getDuration());
+        f.reset(10);
+        System.out.println(f.getStart() + "," + f.getDuration());
+        f.stop(11);
+        System.out.println(f.getStart() + "," + f.getDuration());
+        System.out.println(f.getDelay());
+
     }
-    */
+
 }
