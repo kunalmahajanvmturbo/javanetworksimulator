@@ -44,9 +44,12 @@ public class Flow {
     }
 
 
-
+    //stop at time t
+    //duration will be recalculated
     public void stop(int t) {
-
+        //if t < stop, do nothing
+        //if flow is already stopped, don't stop it again 
+        //if duration == 0, then the flow is finished already.
         if (t < start || stopped || duration == 0)
             return;
         if (start + duration <= t) {
@@ -59,6 +62,7 @@ public class Flow {
         stopped = true;
     }
 
+    //reset start time 
     public void reset(int t) {
         if (duration == 0)
             return;
