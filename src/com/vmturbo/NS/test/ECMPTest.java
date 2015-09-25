@@ -5,8 +5,8 @@ package com.vmturbo.NS.test;
 
 import java.util.ArrayList;
 
-
-import com.vmturbo.NS.ECMPPlacement;
+import com.vmturbo.NS.ComputePaths;
+import com.vmturbo.NS.EconomicPlacement;
 import com.vmturbo.NS.Flow;
 import com.vmturbo.NS.Host;
 import com.vmturbo.NS.Link;
@@ -20,12 +20,6 @@ public class ECMPTest {
 
     public static void main(String[] args) {
 
-        int diagonalNum = 6;
-        String t_s = "20|20";
-        ArrayList<String> torToSpineList = new ArrayList<String>();
-        for ( int i = 0 ; i < diagonalNum ; i ++){
-            torToSpineList.add(t_s);
-        }
 
         //create 3 types of nodes
 
@@ -60,24 +54,23 @@ public class ECMPTest {
 
         //connect nodes
         String h_t = "100|100";
-        String[] arrayTS = new String[torToSpineList.size()];
-        arrayTS = torToSpineList.toArray(arrayTS);
+        String t_s = "10|10";
         Utility.connectNodes(a, tor1, new String[] {h_t}, links);
         Utility.connectNodes(b, tor2, new String[] {h_t}, links);
         Utility.connectNodes(c, tor3, new String[] {h_t}, links);
 
 
-        Utility.connectNodes(spineA, tor1, arrayTS, links);
+        Utility.connectNodes(spineA, tor1, new String[] {t_s, t_s}, links);
         Utility.connectNodes(spineA, tor2, new String[] {t_s}, links);
         Utility.connectNodes(spineA, tor3, new String[] {t_s}, links);
 
         Utility.connectNodes(spineB, tor1, new String[] {t_s}, links);
-        Utility.connectNodes(spineB, tor2, arrayTS, links);
+        Utility.connectNodes(spineB, tor2, new String[] {t_s, t_s}, links);
         Utility.connectNodes(spineB, tor3, new String[] {t_s}, links);
 
         Utility.connectNodes(spineC, tor1, new String[] {t_s}, links);
         Utility.connectNodes(spineC, tor2, new String[] {t_s}, links);
-        Utility.connectNodes(spineC, tor3, arrayTS, links);
+        Utility.connectNodes(spineC, tor3, new String[] {t_s, t_s}, links);
 
         /**
         //===============run ECMP (n hosts to n hosts) =================
@@ -109,7 +102,7 @@ public class ECMPTest {
         }
         */
 
-
+        /**
         //===============run ECMP (1 host to 1 host) =================
         ECMPPlacement ecmp = new ECMPPlacement(spines, tors, hosts, links);
         //ecmp.printDistances();
@@ -118,7 +111,7 @@ public class ECMPTest {
             Path path = ecmp.recommendPath(flow);
             path.placeFlow(flow);
         }
-
+        */
 
 
         /**
@@ -151,6 +144,20 @@ public class ECMPTest {
         }
         */
 
+        ///**
+        //==============run economic (1 host to 1 host)================
+        ComputePaths cmp = new ComputePaths(spines, tors, hosts, links);
+        cmp.findPaths();
+        for (int i = 0; i < 12; i++) {
+            Flow flow = new Flow(a, c, 0, 10, 1);
+            Path path = EconomicPlacement.econPlacement(flow, cmp.getPaths(a, c));
+            //System.out.println(path);
+            //System.out.println("=====================\n(" + i + ") " + path + "\n");
+
+            path.placeFlow(flow);
+            //System.out.println(path);
+        }
+        //*/
 
 
 

@@ -64,7 +64,32 @@ public class Path {
         }
         //"demand" is the bandwidth demand of the flow
         double demand = flow.getBandwidth();
+        double quote = computeQuote_sum(demand);
+        //double quote = computeQuote_bottleneck(demand);
+        return Utility.formatDouble(quote, 4);
+    }
 
+
+
+    private double computeQuote_bottleneck(double demand) {
+        //quote is the price of the bottleneck link
+        //bottleneck link is the link of highest utilization percentage
+        double quote = 0;
+        for (Link link : links) {
+            double bandwidthLeft = link.getCapacity() - link.getUtilization();
+            if (demand >= bandwidthLeft) {
+                return -1;
+            }
+            double percentage = (demand + link.getUtilization()) / link.getCapacity();
+            double linkPrice = 1 / Math.pow(1 - percentage, 2);
+            if (quote < linkPrice) {
+                quote = linkPrice;
+            }
+        }
+        return quote;
+    }
+
+    private double computeQuote_sum(double demand) {
         //quote of the path is the sum of link prices
         //link price is calculated as 1/(1-U)^2, U is percentage utilized of the link
         double quote = 0;
@@ -96,7 +121,7 @@ public class Path {
                         + "; ";*/
         }
         //System.out.println(quoteStr);
-        return Utility.formatDouble(quote, 4);
+        return quote;
     }
 
 

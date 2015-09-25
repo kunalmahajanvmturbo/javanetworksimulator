@@ -59,11 +59,11 @@ public class Utility {
 
     /**
      * it takes care of everything, including:
-     * - create bidirectional links, and add it to the linkList
-     * - 
+     * - create bidirectional links, and add them to the linkList
+     * - configure neighbors for end nodes
      * @param n1
      * @param n2
-     * @param capacities: 
+     * @param capacities: {"10|10", 
      * @param links
      * @return
      */
