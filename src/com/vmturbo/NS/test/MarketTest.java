@@ -5,8 +5,8 @@ package com.vmturbo.NS.test;
 
 import java.util.ArrayList;
 
-
-import com.vmturbo.NS.ECMPPlacement;
+import com.vmturbo.NS.ComputePaths;
+import com.vmturbo.NS.EconomicPlacement;
 import com.vmturbo.NS.Flow;
 import com.vmturbo.NS.Host;
 import com.vmturbo.NS.Link;
@@ -16,11 +16,11 @@ import com.vmturbo.NS.ToRSwitch;
 import com.vmturbo.NS.Utility;
 
 
-public class ECMPTest {
+public class MarketTest {
 
     public static void main(String[] args) {
 
-        int diagonalNum = 6;
+        int diagonalNum = 2;
         String t_s = "20|20";
         ArrayList<String> torToSpineList = new ArrayList<String>();
         for ( int i = 0 ; i < diagonalNum ; i ++){
@@ -109,16 +109,16 @@ public class ECMPTest {
         }
         */
 
-
+        /**
         //===============run ECMP (1 host to 1 host) =================
         ECMPPlacement ecmp = new ECMPPlacement(spines, tors, hosts, links);
         //ecmp.printDistances();
-        for (int i = 0; i < 12; i++) {
+        for (int i = 0; i < 30; i++) {
             Flow flow = new Flow(a, c, 0, 10, 1);
             Path path = ecmp.recommendPath(flow);
             path.placeFlow(flow);
         }
-
+        */
 
 
         /**
@@ -151,7 +151,19 @@ public class ECMPTest {
         }
         */
 
+        ///**
+        //==============run economic (1 host to 1 host)================
+        ComputePaths cmp = new ComputePaths(spines, tors, hosts, links);
+        cmp.findPaths();
+        for (int i = 0; i < 12; i++) {
+            Flow flow = new Flow(a, c, 0, 10, 1);
+            Path path = EconomicPlacement.econPlacement(flow, cmp.getPaths(a, c));
+            //System.out.println(path);
+            //System.out.println("=====================\n(" + i + ") " + path + "\n");
 
+            path.placeFlow(flow);
+        }
+        //*/
 
 
         Utility.printLinkUsage(links, 0.001);
