@@ -4,6 +4,7 @@
 package com.vmturbo.NS;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 public class LinkMetric {
 
@@ -22,6 +23,7 @@ public class LinkMetric {
     private double aggr_avgTS;
     private double aggr_maxTS;
     private double aggr_stdevTS;
+
 
 
     /**
@@ -146,6 +148,36 @@ public class LinkMetric {
         System.out.println("Avg ToR to Spine: " + getAvgLinkUtilTorSpine()
                            + "\tMax ToR to Spine: " + getMaxLinkUtilTorSpine()
                            + "\tStdev ToR to Spine: " + getStdevLinkUtilTorSpine());
+
+        PrintPercentageMetrics(linkList);
+
+
+    }
+
+    //shangshang 
+    public void PrintPercentageMetrics(Collection<Link> links) {
+
+        ArrayList<Double> HTPerc = new ArrayList<>(); //util percentages for host-tor links
+        ArrayList<Double> TSPerc = new ArrayList<>(); //util percentages for tor-spine links
+
+        for (Link link : links) {
+            switch (link.getLinkType()) {
+                case HOSTTOTOR:
+                    HTPerc.add(link.getPercentage());
+                    break;
+                case TORTOSPINE:
+                    TSPerc.add(link.getPercentage());
+                    break;
+            }
+        }
+        System.out.println("---------------Link Util Percentage----------------");
+        System.out.println("Avg H to ToR: " + Utility.average(HTPerc)
+                           + "\tMax H to ToR: " + Utility.max(HTPerc)
+                           + "\tVar H to ToR: " + Utility.variance(HTPerc));
+        System.out.println("Avg ToR to Spine: " + Utility.average(TSPerc)
+                           + "\tMax ToR to Spine: " + Utility.max(TSPerc)
+                           + "\tVar ToR to Spine: " + Utility.variance(TSPerc));
+
 
 
     }
