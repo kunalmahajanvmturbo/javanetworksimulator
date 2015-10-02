@@ -218,6 +218,26 @@ public class Utility {
         return sum / n;
     }
 
+    public static double max(Collection<Double> data) {
+        double max = Double.MIN_VALUE;
+        for (Double d : data) {
+            if (d > max) {
+                max = d;
+            }
+        }
+        return max;
+    }
+
+    public static double min(Collection<Double> data) {
+        double min = Double.MAX_VALUE;
+        for (Double d : data) {
+            if (d < min) {
+                min = d;
+            }
+        }
+        return min;
+    }
+
     //for Pamela
     public static void printPrePaths(ArrayList<ArrayList<Link>> prePathsList) {
         for (ArrayList<Link> prePath : prePathsList) {
@@ -229,7 +249,7 @@ public class Utility {
     }
 
     public static void main(String[] args) {
-        /**
+
         ArrayList<Double> data = new ArrayList<>();
         data.add(1.0);
         data.add(2.0);
@@ -237,7 +257,9 @@ public class Utility {
         data.add(4.0);
         System.out.println(average(data));
         System.out.println(variance(data));
-        */
+        System.out.println(max(data));
+        System.out.println(min(data));
+
 
         /**
         //testing formatDouble
