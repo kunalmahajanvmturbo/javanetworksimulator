@@ -53,6 +53,12 @@ public class Link implements Comparable<Link> {
         return utilization;
     }
 
+    public double getPercentage() {
+        if (capacity == 0)
+            return 0;
+        return utilization / capacity;
+    }
+
     public LinkType getLinkType() {
         return type;
     }
