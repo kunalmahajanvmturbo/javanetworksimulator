@@ -191,6 +191,33 @@ public class Utility {
 
     }
 
+    public static double average(Collection<Double> data) {
+        if (data == null || data.isEmpty()) {
+            System.out.println("Utility.average: invalid param passed.");
+            return 0;
+        }
+        int n = data.size();
+        double sum = 0;
+        for (Double d : data) {
+            sum += d;
+        }
+        return sum / n;
+    }
+
+    public static double variance(Collection<Double> data) {
+        if (data == null || data.isEmpty()) {
+            System.out.println("Utility.average: invalid param passed.");
+            return 0;
+        }
+        int n = data.size();
+        double avg = average(data);
+        double sum = 0;
+        for (Double d : data) {
+            sum += Math.pow(avg - d, 2);
+        }
+        return sum / n;
+    }
+
     //for Pamela
     public static void printPrePaths(ArrayList<ArrayList<Link>> prePathsList) {
         for (ArrayList<Link> prePath : prePathsList) {
@@ -202,6 +229,17 @@ public class Utility {
     }
 
     public static void main(String[] args) {
+        /**
+        ArrayList<Double> data = new ArrayList<>();
+        data.add(1.0);
+        data.add(2.0);
+        data.add(3.0);
+        data.add(4.0);
+        System.out.println(average(data));
+        System.out.println(variance(data));
+        */
+
+        /**
         //testing formatDouble
         System.out.println(formatDouble(3.4995, 3));
 
@@ -228,6 +266,6 @@ public class Utility {
         printLinkUsage(null, 0.001);
         pp1.add(null);
         getMultiLinks(n1, n2, pp1);
-
+        */
     }
 }
