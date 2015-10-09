@@ -4,6 +4,8 @@
 package com.vmturbo.NS;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * @author kunal, shangshang, pamela
@@ -18,14 +20,15 @@ public class SimulatorMain {
     ArrayList<FlowEvent> flowQueue;
 
 
-    private static String TOPOFILE = "input/symmetric-diagonal-topology";
-    private static String QUEUEFILE = "input/yy-flowqueue";
+    private static String TOPOFILE = "input/topology";
+    private static String QUEUEFILE = "input/overFlow";
 
 
 
     public static void main(String[] args) {
         SimulatorMain simulator = new SimulatorMain();
         LinkMetric metric = new LinkMetric();
+        Map<Flow, Double> throughput = new LinkedHashMap<>();
 
         // discover the topology
         TopologySetup topo = TopologySetup.getInstance();
@@ -58,7 +61,8 @@ public class SimulatorMain {
             Flow flow = flowEvent.getFlow();
             switch (flowEvent.getFlowEventType()) {
                 case END:
-                    flow.getPath().removeFlow(flow);
+                    if (flow.getPath() != null)
+                        flow.getPath().removeFlow(flow);
                     System.err.println("Flow event end " + flow.getSource()
                                        + "\tdest:"
                                        + flow.getDest()
@@ -82,11 +86,26 @@ public class SimulatorMain {
 
 
 
-                 // Path pathSelected = ecmp.recommendPath(flow);
-                 //  Path pathSelected = RandomPlacement.randomPlacement(flow, allPaths);
+                    //Path pathSelected = ecmp.recommendPath(flow);
+                    // Path pathSelected = RandomPlacement.randomPlacement(flow, allPaths);
                     Path pathSelected = EconomicPlacement.econPlacement(flow, allPaths);
                     System.out.println("path select" + pathSelected);
-                    pathSelected.placeFlow(flow);
+                    if (pathSelected == null) {
+                        throughput.put(new Flow(flow), 0.0);
+                        flow.setBandwith(0);
+                    }
+                    else {
+                        double capacityLeft = Utility.formatDouble(pathSelected.capacityLeft(), 4);
+                        if (flow.getBandwidth() <= capacityLeft) {
+                            pathSelected.placeFlow(flow);
+                            throughput.put(new Flow(flow), flow.getBandwidth());
+                        }
+                        else { //pathSelected can only serve part of the flow                        
+                            throughput.put(new Flow(flow), capacityLeft);
+                            flow.setBandwith(capacityLeft);
+                            pathSelected.placeFlow(flow);
+                        }
+                    }
 
 
                     metric.calculateLinkUtil(topo.linkList);
@@ -104,6 +123,8 @@ public class SimulatorMain {
 
         }
         metric.printAggrMetrics();
+        System.out.println(throughput);
+
     }
 
 }

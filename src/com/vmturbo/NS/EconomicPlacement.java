@@ -53,7 +53,17 @@ public class EconomicPlacement {
             System.out.println("insufficient budget: \n" +
                                flow.toString() + "\n" +
                                "minimum quote is " + minQuote + " $");
-            return null;
+            double minPrice = 200001.0;//to approximate infinity, because Double.MAX_VALUE is problematic
+            Path pathSelected = null;
+            for (Path path : paths) {
+                if (path.getCurrentPrice().numInf > 0) {
+                    continue;
+                }
+                if (path.getCurrentPrice().price < minPrice) {
+                    pathSelected = path;
+                }
+            }
+            return pathSelected;
         }
 
     }

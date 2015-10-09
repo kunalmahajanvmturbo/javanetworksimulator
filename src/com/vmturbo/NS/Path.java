@@ -134,6 +134,31 @@ public class Path {
         return quote;
     }
 
+    public Price getCurrentPrice() {
+        double price = 0;
+        int numInfinity = 0;
+        for (Link link : links) {
+            double percentage = link.getPercentage();
+            if (percentage >= 1) {
+                numInfinity++;
+            }
+            else {
+                price += 1 / Math.pow(1 - percentage, 2);
+            }
+        }
+        price = Utility.formatDouble(price, 4);
+        return new Price(numInfinity, price);
+    }
+
+    class Price {
+        int numInf;
+        double price;
+
+        Price(int n, double p) {
+            numInf = n;
+            price = p;
+        }
+    }
 
     /**
      * 

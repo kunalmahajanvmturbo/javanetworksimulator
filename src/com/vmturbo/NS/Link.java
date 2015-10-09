@@ -55,8 +55,8 @@ public class Link implements Comparable<Link> {
 
     public double getPercentage() {
         if (capacity == 0)
-            return 0;
-        return utilization / capacity;
+            return 1;
+        return Utility.formatDouble(utilization / capacity, 4);
     }
 
     public LinkType getLinkType() {

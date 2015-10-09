@@ -27,6 +27,18 @@ public class Flow {
         begin = start;
     }
 
+    public Flow(Flow f) {
+        this.source = f.getSource();
+        this.dest = f.getDest();
+        this.start = f.getStart();
+        this.duration = f.getDuration();
+        this.bandwidth = f.getBandwidth();
+        this.budget = f.getBandwidth();
+
+        begin = start;
+
+    }
+
     public Host getSource() {
         return source;
     }
@@ -43,6 +55,9 @@ public class Flow {
         return duration;
     }
 
+    public void setBandwith(double bw) {
+        this.bandwidth = bw;
+    }
 
     //stop at time t
     //duration will be recalculated

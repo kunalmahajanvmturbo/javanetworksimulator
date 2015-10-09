@@ -149,7 +149,7 @@ public class LinkMetric {
                            + "\tMax ToR to Spine: " + getMaxLinkUtilTorSpine()
                            + "\tStdev ToR to Spine: " + getStdevLinkUtilTorSpine());
 
-        PrintPercentageMetrics(linkList);
+        //PrintPercentageMetrics(linkList);
 
 
     }

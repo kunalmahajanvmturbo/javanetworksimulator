@@ -117,6 +117,7 @@ public class ECMPPlacement {
             current = linkSelected.getDestNode();
         }
 
+
         return path;
     }
 
