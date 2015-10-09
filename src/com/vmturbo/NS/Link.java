@@ -85,11 +85,20 @@ public class Link implements Comparable<Link> {
         this.capacity = Utility.formatDouble(capac, 4);
     }
 
+    public double getCapacityLeft() {
+        if (utilization >= capacity) {
+            return 0;
+        }
+        else {
+            return Utility.formatDouble(capacity - utilization, 4);
+        }
+    }
+
     public void setUtilization(double util) {
         if (util < 0) {
             return;
         }
-        this.utilization = Utility.formatDouble(util, 2);
+        this.utilization = Utility.formatDouble(util, 4);
     }
 
 

@@ -36,6 +36,16 @@ public class Path {
         return links.size();
     }
 
+    public double capacityLeft() {
+        double bottleneck = Double.MAX_VALUE;
+        for (Link link : links) {
+            if (link.getCapacity() < bottleneck) {
+                bottleneck = link.getCapacityLeft();
+            }
+        }
+        return bottleneck;
+    }
+
     @Override
     public String toString() {
         String s = "path: ";
